@@ -1,0 +1,23 @@
+meta {
+  name: api
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/products
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzc3OTU4NTA5fQ.x5TRi60aXIqyv_lIluoFVbYXj7QQIPbe9bDVLYkgJcE
+}
+
+body:json {
+  {"name": "abcd", "price": 11.22}
+}
+
+settings {
+  encodeUrl: true
+}
