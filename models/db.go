@@ -3,9 +3,8 @@ package models
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 type Product struct {
@@ -16,14 +15,21 @@ type Product struct {
 
 var DB *sql.DB
 
-func InitDB() {
+func InitDB() error {
 	var err error
-	DB, err = sql.Open("sqlite3", ":memory:")
+	DB, err = sql.Open("sqlite", ":memory:")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	statement, _ := DB.Prepare("CREATE TABLE IF NOT EXISTS products (id TEXT PRIMARY KEY, name TEXT, price REAL)")
-	statement.Exec()
+	if err := DB.Ping(); err != nil {
+		return err
+	}
+
+	if _, err := DB.Exec("CREATE TABLE IF NOT EXISTS products (id TEXT PRIMARY KEY, name TEXT, price REAL)"); err != nil {
+		return err
+	}
+
 	fmt.Println("Database initialized in memory")
+	return nil
 }

@@ -12,7 +12,9 @@ import (
 
 func main() {
 	// Initialize Database (Mocking H2 with SQLite in-memory)
-	models.InitDB()
+	if err := models.InitDB(); err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
 
 	// Start Background Consumer
 	service.StartConsumer()
